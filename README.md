@@ -9,7 +9,7 @@ This dataset contains product data from Amazon, including various metadata relat
 
 
 | Variable   | Description  |
-|:-------:| -----:|
+|:-------| :-----|
 | reviewerID  | User ID    |
 | asin   | Product ID    |
 | reviewerName     |  User name  |
