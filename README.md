@@ -5,4 +5,4 @@ One of the primary challenges in e-commerce is accurately calculating the rating
 
 #  Dataset Story
 
-This dataset contains product data from Amazon, including various metadata related to product categories. It contains user ratings and comments for the product that has received the highest number of reviews in the electronics category.
+This dataset contains product data from Amazon, including various metadata related to product categories. It includes user ratings and reviews for the product that has received the highest number of reviews in the electronics category. 
