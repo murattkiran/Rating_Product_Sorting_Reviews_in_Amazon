@@ -14,7 +14,7 @@ This dataset contains product data from Amazon, including various metadata relat
 | asin   | Product ID    |
 | reviewerName     |  User name  |
 | helpful  |Helpful rating score  |
-| reviewText  | review   |
+| reviewText  | Review   |
 |overall    | Product rating  |
 | summary  | Review summary    |
 | unixReviewTime  | Review time (unix time)   |
