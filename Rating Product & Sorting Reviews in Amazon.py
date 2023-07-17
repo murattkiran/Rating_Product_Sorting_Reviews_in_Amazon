@@ -82,12 +82,8 @@ df.loc[(df["day_diff"] > 431) & (df["day_diff"] <= 601), "overall"].mean()
 df.loc[df["day_diff"] > 601, "overall"].mean()
 #4.4462540716612375
 
-# Değerlendirmeden itibaren geçen gün sayısı azaldıkça puan artmıştır
-# bu üründe süreç içerisinde iyileştirme yapılmış olabilir ve teknolojik ürün olduğuna göre yazılım güncellemeleri
-# ya da yeni sürümler üretilmiş olabilir.
-# daha güncel olan yorumları daha çok ağırlıklandırdık. dolayısıyla ağırlıklı ortalamaya katkıları daha yüksek
-
-
+# The score increased as the number of days since the review decreased.
+# We have given more weight to more recent comments. Therefore, their contribution to the weighted average is higher.
 
 
 
