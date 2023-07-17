@@ -68,7 +68,7 @@ time_based_weighted_average(df)
 
 
 ###################################################
-# Adım 3: Compare and Interpret the Average Scores for Each Time Period in the Weighted Rating.
+# Step 3: Compare and Interpret the Average Scores for Each Time Period in the Weighted Rating.
 ###################################################
 df.loc[df["day_diff"] <= 281, "overall"].mean()
 #4.6957928802588995
@@ -88,17 +88,16 @@ df.loc[df["day_diff"] > 601, "overall"].mean()
 
 
 ###################################################
-# Görev 2: Ürün için Ürün Detay Sayfasında Görüntülenecek 20 Review'i Belirleyiniz.
+# Task 2: Specify 20 Reviews for the Product to be Displayed on the Product Detail Page.
 ###################################################
 
 ###################################################
-# Adım 1. helpful_no Değişkenini Üretiniz
+# Step 1. Generate the helpful_no variable
 ###################################################
-# Not:
-# total_vote bir yoruma verilen toplam up-down sayısıdır.
-# up, helpful demektir.
-# veri setinde helpful_no değişkeni yoktur, var olan değişkenler üzerinden üretilmesi gerekmektedir.
-#Toplam oy sayısından (total_vote) yararlı oy sayısı (helpful_yes) çıkarılarak yararlı bulunmayan oy sayılarını (helpful_no) bulunuz.
+# Note:
+# total_vote represents the total number of up-down votes for a review.
+# up means helpful.
+# There is no helpful_no variable in the data set, it must be generated over existing variables.
 
 df["helpful_no"] = df["total_vote"] - df["helpful_yes"]
 df.head()
@@ -106,14 +105,8 @@ df.head()
 
 
 ###################################################
-# Adım 2. score_pos_neg_diff, score_average_rating ve wilson_lower_bound Skorlarını Hesaplayıp Veriye Ekleyiniz
+# Step 2. Calculate score_pos_neg_diff, score_average_rating and wilson_lower_bound Scores and add to dataframe
 ###################################################
-#score_pos_neg_diff, score_average_rating ve wilson_lower_bound skorlarını hesaplayabilmek için score_pos_neg_diff,
-#score_average_rating ve wilson_lower_bound fonksiyonlarını tanımlayınız.
-#score_pos_neg_diff'a göre skorlar oluşturunuz. Ardından; df içerisinde score_pos_neg_diff ismiyle kaydediniz.
-#score_average_rating'a göre skorlar oluşturunuz. Ardından; df içerisinde score_average_rating ismiyle kaydediniz.
-# wilson_lower_bound'a göre skorlar oluşturunuz. Ardından; df içerisinde wilson_lower_bound ismiyle kaydediniz.
-
 
 # score_pos_neg_diff
 def score_pos_neg_diff(helpful_yes, helpful_no):
@@ -137,29 +130,6 @@ df.columns
 
 # wilson_lower_bound
 def wilson_lower_bound(helpful_yes, helpful_no, confidence=0.95):
-    """
-    Wilson Lower Bound Score hesapla
-
-    - Bernoulli parametresi p için hesaplanacak güven aralığının alt sınırı WLB skoru olarak kabul edilir.
-    - Hesaplanacak skor ürün sıralaması için kullanılır.
-    - Not:
-    Eğer skorlar 1-5 arasıdaysa 1-3 negatif, 4-5 pozitif olarak işaretlenir ve bernoulli'ye uygun hale getirilebilir.
-    Bu beraberinde bazı problemleri de getirir. Bu sebeple bayesian average rating yapmak gerekir.
-
-    Parameters
-    ----------
-    helpful_yes: int
-        helpful_yes count
-    helpful_no: int
-        helpful_no count
-    confidence: float
-        confidence
-
-    Returns
-    -------
-    wilson score: float
-
-    """
     n = helpful_yes + helpful_no
     if n == 0:
         return 0
@@ -172,16 +142,14 @@ df["wilson_lower_bound"] = df.apply(lambda x: wilson_lower_bound(x["helpful_yes"
 df.columns
 
 
-
 ##################################################
-# Adım 3. 20 Yorumu Belirleyiniz ve Sonuçları Yorumlayınız.
+# Step 3. Identify 20 Comments and Interpret Results.
 ###################################################
-#wilson_lower_bound'a göre ilk 20 yorumu belirleyip sıralayanız. Sonuçları yorumlayınız.
 
 df.sort_values("wilson_lower_bound", ascending=False).head(20)
 
-# Tüm yöntemleri incelediğimizde, "score_pos_neg_diff" ve "score_average_rating" yöntemlerinin verilen puanlara bağlı olduğunu görüyoruz.
-# Toplam oy sayısına göre değerlendirdiğimizde, tamamı olmasa da yüksek oy alanların "wlb" değerinin de üst sıralarda olduğunu fark ediyoruz.
-# Bu hesaplamalarda en önemli faktör, sosyal kanıtı doğru bir şekilde yansıtmaktır.
-# Bu nedenle, sıralama ve "wlb" değeri uyumlu görünmektedir.
-# Öyle ki, kullanıcının yorumu faydalıysa, puanı en düşük olan yorum bile "wilson_lower_bound" sıralamasında üstlerde olabilir.
+# When examining all the methods, we can see that "score_pos_neg_diff" and "score_average_rating" are dependent on the given scores.
+# When we evaluate it according to the total number of votes, we realize that the "wlb" value of those who received the highest votes, if not all, is also in the upper ranks.
+# The most important factor in these calculations is to accurately reflect social proof.
+# Therefore, the sort and the "wlb" value appear to be compatible.
+# In fact, if a user's review is helpful, even the review with the lowest score can be ranked high in the "wilson_lower_bound" ranking.
