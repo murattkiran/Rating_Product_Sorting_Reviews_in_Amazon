@@ -1,53 +1,8 @@
 
 ###################################################
-# PROJE: Rating Product & Sorting Reviews in Amazon
+# Rating Product & Sorting Reviews in Amazon
 ###################################################
 
-###################################################
-# İş Problemi
-###################################################
-
-# E-ticaretteki en önemli problemlerden bir tanesi ürünlere satış sonrası verilen puanların doğru şekilde hesaplanmasıdır.
-# Bu problemin çözümü e-ticaret sitesi için daha fazla müşteri memnuniyeti sağlamak, satıcılar için ürünün öne çıkması ve satın
-# alanlar için sorunsuz bir alışveriş deneyimi demektir. Bir diğer problem ise ürünlere verilen yorumların doğru bir şekilde sıralanması
-# olarak karşımıza çıkmaktadır. Yanıltıcı yorumların öne çıkması ürünün satışını doğrudan etkileyeceğinden dolayı hem maddi kayıp
-# hem de müşteri kaybına neden olacaktır. Bu 2 temel problemin çözümünde e-ticaret sitesi ve satıcılar satışlarını arttırırken müşteriler
-# ise satın alma yolculuğunu sorunsuz olarak tamamlayacaktır.
-
-###################################################
-# Veri Seti Hikayesi
-###################################################
-
-# Amazon ürün verilerini içeren bu veri seti ürün kategorileri ile çeşitli metadataları içermektedir.
-# Elektronik kategorisindeki en fazla yorum alan ürünün kullanıcı puanları ve yorumları vardır.
-
-# Değişkenler:
-# reviewerID: Kullanıcı ID’si
-# asin: Ürün ID’si
-# reviewerName: Kullanıcı Adı
-# helpful: Faydalı değerlendirme derecesi
-# reviewText: Değerlendirme
-# overall: Ürün rating’i
-# summary: Değerlendirme özeti
-# unixReviewTime: Değerlendirme zamanı
-# reviewTime: Değerlendirme zamanı Raw
-# day_diff: Değerlendirmeden itibaren geçen gün sayısı
-# helpful_yes: Değerlendirmenin faydalı bulunma sayısı
-# total_vote: Değerlendirmeye verilen oy sayısı
-
-
-
-###################################################
-# GÖREV 1: Average Rating'i Güncel Yorumlara Göre Hesaplayınız ve Var Olan Average Rating ile Kıyaslayınız.
-###################################################
-
-# Paylaşılan veri setinde kullanıcılar bir ürüne puanlar vermiş ve yorumlar yapmıştır.
-# Bu görevde amacımız verilen puanları tarihe göre ağırlıklandırarak değerlendirmek.
-# İlk ortalama puan ile elde edilecek tarihe göre ağırlıklı puanın karşılaştırılması gerekmektedir.
-
-###################################################
-# Adım 1: Veri Setini Okutunuz ve Ürünün Ortalama Puanını Hesaplayınız.
-###################################################
 import pandas as pd
 import math
 import scipy.stats as st
@@ -59,9 +14,19 @@ pd.set_option('display.width', 500)
 pd.set_option('display.expand_frame_repr', False)
 pd.set_option('display.float_format', lambda x: '%.5f' % x)
 
+###################################################
+# TASK 1: Calculate the Average Rating Based on Current Reviews and Compare it with the Existing Average Rating.
+###################################################
+# In the shared dataset, users have given scores and made comments on a product.
+# The aim of this task is to evaluate the given scores by weighting them according to the date.
+# It is necessary to compare the initial average score with the weighted rating obtained based on the date.
+###################################################
+
+###################################################
+# Step 1: Read the Data Set and Calculate the Average Score of the Product.
+###################################################
 df = pd.read_csv("Rating Product&SortingReviewsinAmazon/amazon_review.csv")
 
-# asagidaki check_df kullanmaya da alış artık!
 """def check_df(dataframe, head=5):
     print("############### Shape ################")
     print(dataframe.shape)
@@ -76,18 +41,15 @@ df = pd.read_csv("Rating Product&SortingReviewsinAmazon/amazon_review.csv")
     print ( "########### Quantiles ###############" )
     print ( dataframe.describe([0, 0.25, 0.50, 0.75]).T )
 """
+check_df(df)
 
-df.head()
-df.info()
-df.shape
-
-# Ortalama Puan
+# Average Score
 df["overall"].mean()   #4.587589013224822
 df["overall"].value_counts()
 
 
 ###################################################
-# Adım 2: Tarihe Göre Ağırlıklı Puan Ortalamasını Hesaplayınız.
+# Step 2: Calculate the Weighted Average Score Based on Date.
 ###################################################
 
 df["day_diff"].sort_values(ascending=False).head()
@@ -106,7 +68,7 @@ time_based_weighted_average(df)
 
 
 ###################################################
-# Adım 3: Ağırlıklandırılmış puanlamada her bir zaman diliminin ortalamasını karşılaştırıp yorumlayınız.
+# Adım 3: Compare and Interpret the Average Scores for Each Time Period in the Weighted Rating.
 ###################################################
 df.loc[df["day_diff"] <= 281, "overall"].mean()
 #4.6957928802588995
